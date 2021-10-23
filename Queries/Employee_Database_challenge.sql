@@ -1,5 +1,5 @@
+-- Deliverable 1
 --TABLE 1 - Retirement Titles table.
-
 SELECT e.emp_no,
 		e.first_name,
 		e.last_name,
@@ -27,7 +27,7 @@ ORDER BY rt.emp_no, rt.to_date DESC;
 
 SELECT * FROM unique_titles
 
--- The number of retiring employees by their most recent job title.
+-- Use Count to get # of employes retiring by job title
 SELECT COUNT(ut.title), ut.title
 INTO retiring_titles
 FROM unique_titles as ut
@@ -35,6 +35,26 @@ GROUP BY ut.title
 ORDER BY count DESC;
 
 SELECT * FROM retiring_titles
+
+-- Deliverable 2
+--Determine employees eligible for the Mentorship program.
+SELECT DISTINCT ON (e.emp_no)
+	e.emp_no,
+	e.first_name, 
+	e.last_name, 
+	e.birth_date,
+	de.from_date,
+	de.to_date,
+	ti.title
+INTO mentorship_eligibilty
+FROM employees as e
+INNER JOIN dep_emp as de
+ON (e.emp_no = de.emp_no)
+INNER JOIN titles as ti
+ON (e.emp_no = ti.emp_no)
+WHERE (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
+AND (de.to_date = '9999-01-01')
+ORDER BY e.emp_no, ti.from_date DESC
 
 
 
